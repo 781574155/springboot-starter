@@ -1,0 +1,12 @@
+（生成liquibase的changeset）
+基于提供的信息，生成创建数据库表的SQL语句。
+我希望生成的表名是下划线格式的。
+提供的信息中，以@开头的为Java注解，如果你不能理解的话，可以忽略。
+生成完后，根据生成的SQL语句，将其转化为liquibase的changeset，changeset的格式为sql，不是xml。生成的changeset的条目的author为wuhuaxu，id为1。changeset条目要加上rollback。
+对于user_id字段（如果有的话），要加上FOREIGN KEY (user_id) REFERENCES user_entity(id) ON DELETE CASCADE
+对于自增长的Integer主键，直接声明为id INT AUTO_INCREMENT PRIMARY KEY
+对于枚举型字段，数据库类型为VARCHAR(255)
+我使用spring-boot框架
+
+
+根据PlayPlanEntity和PlayPlanRepository。仿照CopyResource，写一个PlayPlanResource。

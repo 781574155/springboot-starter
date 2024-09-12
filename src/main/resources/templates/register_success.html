@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>注册成功</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link  th:href="@{/css/signin.css}" rel="stylesheet"/>
+    <script>
+       window.onload = function() {
+           var countdownElement = document.getElementById('countdown');
+           var count = 5;
+           var countdown = setInterval(function() {
+               countdownElement.textContent = count;
+               if (count === 0) {
+                   clearInterval(countdown); // 清除计时器
+                   window.location.href = "/api/login"; // 跳转到登录页面
+               }
+               count--;
+           }, 1000); // 每1000毫秒（即1秒）执行一次
+       };
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="form-signin">
+        <h2 class="form-signin-heading">注册成功</h2>
+        <p><span id="countdown">5</span>秒后自动跳转到登录页面...<a th:href="@{/login}">立即跳转</a></p>
+    </div>
+</div>
+</body>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>登录</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link  th:href="@{/css/signin.css}" rel="stylesheet"/>
+    <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <form class="form-signin" th:action="@{/login}" method="post">
+    <div th:class="${enablePageLogin} ? '' : 'hidden'">
+        <h2 class="form-signin-heading">登录</h2>
+        <div th:if="${param.error}" class="alert alert-danger" role="alert">用户名或密码错误</div>
+        <div th:if="${param.logout}" class="alert alert-success">已退出</div>
+        <p>
+            <label for="username" class="sr-only">用户名</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="请输入用户名" required autofocus>
+        </p>
+        <p>
+            <label for="password" class="sr-only">密码</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="请输入密码" required>
+        </p>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+        <a th:if="${enablePageRegister}" th:href="@{/register}">没有账户？注册</a>
+    </div>
+    </form>
+
+    <div th:if="${enableWechatLogin}" style="display: flex;justify-content: center;flex-direction: column;align-items: center;">
+        <div style="margin-top: 10px;">使用微信扫一扫登录</div>
+        <div style="margin-top: 5px;font-size: 1.5em;">「 <span style="font-weight: 900">易从</span> 」</div>
+        <div style="margin-top: 20px;" id="qrcode"></div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!document.getElementById("qrcode")) {
+            return;
+        }
+        let qrcode;
+        let state;
+        fetch('/api/wechat/create_login_request', {method: 'POST'})
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    state = data.data.state;
+                    const appId = data.data.app_id;
+                    const redirectUri = encodeURIComponent('https://www.openai36.com/api/wechat/login'); // 替换为你的回调URL
+                    const scope = 'snsapi_base';
+
+                    const qrText = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${state}#wechat_redirect`;
+                    qrcode = new QRCode(document.getElementById("qrcode"), {
+                        text: qrText,
+                        width: 128,
+                        height: 128,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.L
+                    });
+
+                    setInterval(function() {
+                        fetch('/api/wechat/valid_login_request?state='+state)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.success) {
+                                qrcode.clear();
+                                alert(data.message);
+                                return;
+                            }
+                            if (!data.data.valid_key) {
+                                qrcode.clear();
+                                fetch('/api/wechat/create_login_request', {method: 'POST'})
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            state = data.data.state;
+                                            const qrText = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&state=${state}#wechat_redirect`;
+                                            qrcode.makeCode(qrText); // 更新二维码
+                                        }
+                                    })
+                                    .catch(error => console.error('Error:', error));
+                                return;
+                            }
+                            if (!data.data.login) {
+                                return;
+                            }
+                            const form = document.querySelector('.form-signin');
+                            const usernameInput = form.querySelector('#username');
+                            const passwordInput = form.querySelector('#password');
+                            usernameInput.value = state;
+                            passwordInput.value = data.data.tmp_password;
+                            form.submit();
+                        })
+                        .catch(error => console.error('Error:', error));
+                    }, 2000); // 每两秒执行一次
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        })
+</script>
+</body>
+</html>

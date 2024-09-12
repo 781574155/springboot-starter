@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/system_config_entity.sql
+  - include:
+      file: db/changelog/user_entity.sql
+  - include:
+      file: db/changelog/user_secret_key_entity.sql
+  - include:
+      file: db/changelog/wechat_user_entity.sql

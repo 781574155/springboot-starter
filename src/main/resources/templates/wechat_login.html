@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>登录</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link  th:href="@{/css/signin.css}" rel="stylesheet"/>
+    <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!--  此页面是微信浏览器访问登录的页面  -->
+</head>
+<body>
+<div class="container">
+    <form class="form-signin" th:action="@{/login}" method="post">
+        <div th:class="${param.error} ? '' : 'hidden'">
+            <h2 class="form-signin-heading">登录</h2>
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">用户名或密码错误</div>
+            <div th:if="${param.logout}" class="alert alert-success">已退出</div>
+            <p>
+                <label for="username" class="sr-only">用户名</label>
+                <input type="text" id="username" name="username" th:value="${username}" class="form-control" placeholder="请输入用户名" required autofocus>
+            </p>
+            <p>
+                <label for="password" class="sr-only">密码</label>
+                <input type="password" id="password" name="password" th:value="${password}" class="form-control" placeholder="请输入密码" required>
+            </p>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            <a th:if="${enablePageRegister}" th:href="@{/register}">没有账户？注册</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.form-signin');
+        form.submit();
+    })
+</script>
+</body>
+</html>
