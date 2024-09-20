@@ -1,3 +1,7 @@
+# docker
+docker login --username=wuhuaxu registry.cn-shenzhen.aliyuncs.com
+# mysql
+docker run --name mysql --restart always -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -d mysql:8.0
 # springboot-starter
 docker build -t openai36/springboot-starter .
 docker tag openai36/springboot-starter:latest registry.cn-shenzhen.aliyuncs.com/openai36/springboot-starter:latest
@@ -26,5 +30,7 @@ git remote add origin git@github.com:781574155/data-input.git
 ```
 
 README.md中的启动docker容器的命令还要替换端口号8888
+
+修改WebConfig中的cors配置
 
 创建数据库data-input后即可运行AggregationApplication
