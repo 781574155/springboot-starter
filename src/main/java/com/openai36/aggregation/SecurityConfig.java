@@ -58,8 +58,9 @@ public class SecurityConfig{
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll())
                 .formLogin(form -> form
-                        .loginPage("/login").defaultSuccessUrl("https://www.openai36.com/PkceRedirect")
-                        .permitAll());
+                        .loginPage("/login").defaultSuccessUrl("/PkceRedirect")
+                        .permitAll())
+                .rememberMe(rm -> rm.key("openai36").rememberMeCookieName("rm").alwaysRemember(true));
         // 添加BearerTokenAuthenticationFilter，将认证服务当做一个资源服务，解析请求头中的token
         http
                 .oauth2ResourceServer(resourceServer -> resourceServer.jwt(Customizer.withDefaults()));
@@ -116,7 +117,7 @@ public class SecurityConfig{
     @SneakyThrows
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
-        String baseDir = "/var/hc/aggregation";
+        String baseDir = "/var/hc/springboot-starter";
         Path jwksetPath = Path.of(baseDir+"/aggregation_jwkset");
         if (Files.exists(jwksetPath)) {
             log.info("jwkset exists, load from disk");
