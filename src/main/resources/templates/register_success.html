@@ -1,23 +1,24 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>注册成功</title>
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link  th:href="@{/css/signin.css}" rel="stylesheet"/>
+    <link th:href="@{/libs/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/signin.css}" rel="stylesheet"/>
     <script>
-       window.onload = function() {
-           var countdownElement = document.getElementById('countdown');
-           var count = 5;
-           var countdown = setInterval(function() {
-               countdownElement.textContent = count;
-               if (count === 0) {
-                   clearInterval(countdown); // 清除计时器
-                   window.location.href = "/api/login"; // 跳转到登录页面
-               }
-               count--;
-           }, 1000); // 每1000毫秒（即1秒）执行一次
-       };
+        window.onload = function() {
+            var countdownElement = document.getElementById('countdown');
+            var count = 5;
+            var countdown = setInterval(function() {
+                countdownElement.textContent = count;
+                if (count === 0) {
+                    clearInterval(countdown); // 清除计时器
+                    window.location.href = '[[@{/login}]]'; // 跳转到登录页面
+                }
+                count--;
+            }, 1000); // 每1000毫秒（即1秒）执行一次
+        };
     </script>
 </head>
 <body>

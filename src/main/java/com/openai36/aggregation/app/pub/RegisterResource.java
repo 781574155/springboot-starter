@@ -74,7 +74,7 @@ public class RegisterResource {
         }
         if (user.getPassword().length() < 5 || user.getPassword().length() > 32) {
             model.addAttribute("error", true);
-            model.addAttribute("message", "注册失败：密码最小长度为32位");
+            model.addAttribute("message", "注册失败：密码最小长度为5位，最大为32位");
             return "register";
         }
         if (!user.getPassword().equals(user.getConfirmPassword())) {

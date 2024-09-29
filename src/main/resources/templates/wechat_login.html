@@ -1,12 +1,12 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>登录</title>
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <link  th:href="@{/css/signin.css}" rel="stylesheet"/>
-    <script src="https://cdn.bootcdn.net/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!--  此页面是微信浏览器访问登录的页面  -->
+    <link th:href="@{/libs/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/signin.css}" rel="stylesheet"/>
+    <!--  此页面是手机扫码后，微信浏览器打开的登录的页面  -->
 </head>
 <body>
 <div class="container">
