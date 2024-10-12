@@ -26,7 +26,7 @@ sudo docker logs -n 100 -f springboot-starter
 
 ```
 git remote remove origin
-git remote add origin git@github.com:781574155/data-input.git
+git remote add origin git@github.com:781574155/springboot-starter.git
 ```
 
 README.md中的启动docker容器的命令还要替换端口号8888
